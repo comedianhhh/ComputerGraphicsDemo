@@ -1,0 +1,4 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/Cube.fbx","D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/bin/Windows/Content/Cube.xnb","ModelProcessor","ModelContent",25440,907,0.2490263
+"D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/CubeMap.fx","D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/bin/Windows/Content/CubeMap.xnb","EffectProcessor","CompiledEffectContent",1220,1856,0.4400157
+"D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/SkyBox.dds","D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/bin/Windows/Content/SkyBox.xnb","TextureProcessor","TextureCubeContent",786560,786535,0.1510247
