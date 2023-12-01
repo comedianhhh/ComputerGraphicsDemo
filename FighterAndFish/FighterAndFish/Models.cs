@@ -13,9 +13,18 @@ namespace FighterAndFish
         public Matrix Scale { get; set; }
         public Effect Shader { get;set; }
 
+
+        //properties for shader flags
+        public bool UseDiffuseMap { get; set; }
+        public bool UseNormalMap { get; set; }
+        public bool UseSpecularHighlights { get; set; }
+
         //Texturing
         public Texture Texture { get; set; }
         public float WrapAmount { get; set; }
+
+        //property for the normal map texture
+        public Texture2D NormalMap { get; set; }
 
         //Lighting variables
         public Vector3 DiffuseColor { get; set; }
@@ -28,8 +37,8 @@ namespace FighterAndFish
 
         public float ConeAngle { get; set; }
  
-        public Vector3[] LightColor { get; set; }
-        public Vector3[] LightDirection { get; set; }
+        public Vector3 LightColor { get; set; }
+        public Vector3 LightDirection { get; set; }
 
 
         public Models(Model _mesh,
@@ -50,10 +59,10 @@ namespace FighterAndFish
             LightAttenuation = 5000;
             LightFalloff = 2.0f;
             ConeAngle = 45.0f;
-  
 
-            LightColor = new Vector3[] { new Vector3(-1, 0, 0), new Vector3(0, 1, 0), new Vector3(1, 0, 0) };
-            LightDirection = new Vector3[] { new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1) };
+
+            LightColor = new Vector3(1.0f, 1.0f, 1.0f); // White light
+            LightDirection = new Vector3(0.0f, -1.0f, 0.0f); // Direction facing downwards
         }
 
         public void SetShader(Effect _effect)
@@ -77,36 +86,52 @@ namespace FighterAndFish
                            Matrix _projection,
                            Vector3 _cameraPosition)
         {
+            // Calculate the World-View-Projection Matrix
             Matrix worldMatrix = GetTransform();
             Matrix worldViewProjection = worldMatrix * _view * _projection;
 
+
+            // Set shader parameters for transformations
             Shader.Parameters["World"].SetValue(worldMatrix);
             Shader.Parameters["WorldViewProjection"].SetValue(worldViewProjection);
-            Shader.Parameters["Texture"].SetValue(Texture);
+
+
+            // Set the texture
+            if (Texture != null && UseDiffuseMap) // Assuming useDiffuseMap is a class property
+            {
+                Shader.Parameters["Texture"].SetValue(Texture);
+            }
+
+            // Set the normal map
+            if (NormalMap != null && UseNormalMap) // Assuming NormalMap is a class property
+            {
+                Shader.Parameters["NormalMap"].SetValue(NormalMap);
+            }
+
+            // Set camera position
             Shader.Parameters["CameraPosition"].SetValue(_cameraPosition);
 
-            // Set additional texture samplers if applicable
-            // E.g., Shader.Parameters["NormalMap"].SetValue(NormalMap);
+         
 
+            // Set lighting variables
             Shader.Parameters["DiffuseColor"].SetValue(DiffuseColor);
             Shader.Parameters["SpecularPower"].SetValue(SpecularPower);
             Shader.Parameters["SpecularColor"].SetValue(SpecularColor);
-
-            // Update lighting parameters
-            Shader.Parameters["LightPosition"].SetValue(LightPosition);
-            Shader.Parameters["LightAttenuation"].SetValue(LightAttenuation);
-            Shader.Parameters["LightFalloff"].SetValue(LightFalloff);
-            Shader.Parameters["ConeAngle"].SetValue(ConeAngle);
-
-            Shader.Parameters["LightColor"].SetValue(LightColor);
             Shader.Parameters["LightDirection"].SetValue(LightDirection);
+            Shader.Parameters["LightColor"].SetValue(LightColor);
 
-            // Conditional features
-            // E.g., Shader.Parameters["UseNormalMap"].SetValue(useNormalMap);
+            // Set shader flags
+            Shader.Parameters["useDiffuseMap"].SetValue(UseDiffuseMap);
+            Shader.Parameters["useNormalMap"].SetValue(UseNormalMap);
+            Shader.Parameters["useSpecularHighlights"].SetValue(UseSpecularHighlights);
 
-
+            // Draw each mesh with the effect
             foreach (ModelMesh mesh in Mesh.Meshes)
             {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    part.Effect = Shader;
+                }
                 mesh.Draw();
             }
         }
