@@ -77,19 +77,32 @@ namespace FighterAndFish
                            Matrix _projection,
                            Vector3 _cameraPosition)
         {
-            Shader.Parameters["World"].SetValue(GetTransform());
-            Shader.Parameters["WorldViewProjection"].SetValue(GetTransform()*_view*_projection);
+            Matrix worldMatrix = GetTransform();
+            Matrix worldViewProjection = worldMatrix * _view * _projection;
+
+            Shader.Parameters["World"].SetValue(worldMatrix);
+            Shader.Parameters["WorldViewProjection"].SetValue(worldViewProjection);
             Shader.Parameters["Texture"].SetValue(Texture);
             Shader.Parameters["CameraPosition"].SetValue(_cameraPosition);
+
+            // Set additional texture samplers if applicable
+            // E.g., Shader.Parameters["NormalMap"].SetValue(NormalMap);
+
             Shader.Parameters["DiffuseColor"].SetValue(DiffuseColor);
             Shader.Parameters["SpecularPower"].SetValue(SpecularPower);
             Shader.Parameters["SpecularColor"].SetValue(SpecularColor);
 
-            Shader.Parameters["WrapAmount"].SetValue(WrapAmount);
+            // Update lighting parameters
+            Shader.Parameters["LightPosition"].SetValue(LightPosition);
+            Shader.Parameters["LightAttenuation"].SetValue(LightAttenuation);
+            Shader.Parameters["LightFalloff"].SetValue(LightFalloff);
+            Shader.Parameters["ConeAngle"].SetValue(ConeAngle);
 
-
-            Shader.Parameters["LightDirection"].SetValue(LightDirection);
             Shader.Parameters["LightColor"].SetValue(LightColor);
+            Shader.Parameters["LightDirection"].SetValue(LightDirection);
+
+            // Conditional features
+            // E.g., Shader.Parameters["UseNormalMap"].SetValue(useNormalMap);
 
 
             foreach (ModelMesh mesh in Mesh.Meshes)

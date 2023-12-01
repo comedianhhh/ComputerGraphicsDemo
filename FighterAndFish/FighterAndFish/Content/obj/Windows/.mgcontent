@@ -6,9 +6,13 @@
   <SourceFiles>
     <File>D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/Cube.fbx</File>
     <File>D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/CubeMap.fx</File>
+    <File>D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/FighterNormal.jpg</File>
+    <File>D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/FighterShader.fx</File>
     <File>D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/SkyBox.dds</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

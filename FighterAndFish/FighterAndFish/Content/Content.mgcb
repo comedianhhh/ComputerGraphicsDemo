@@ -24,7 +24,7 @@
 /processorParam:PremultiplyTextureAlpha=True
 /processorParam:PremultiplyVertexColors=True
 /processorParam:ResizeTexturesToPowerOfTwo=False
-/processorParam:RotationX=0
+/processorParam:RotationX=-90
 /processorParam:RotationY=0
 /processorParam:RotationZ=0
 /processorParam:Scale=1
@@ -37,6 +37,24 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:CubeMap.fx
+
+#begin FighterNormal.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:FighterNormal.jpg
+
+#begin FighterShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:FighterShader.fx
 
 #begin SkyBox.dds
 /importer:TextureImporter
