@@ -12,6 +12,14 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Content\Fighter - Copy\**" />
+    <Compile Remove="Content\NewFolder\**" />
+    <EmbeddedResource Remove="Content\Fighter - Copy\**" />
+    <EmbeddedResource Remove="Content\NewFolder\**" />
+    <None Remove="Content\Fighter - Copy\**" />
+    <None Remove="Content\NewFolder\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.1.303" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
   </ItemGroup>

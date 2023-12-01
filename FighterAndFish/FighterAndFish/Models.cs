@@ -20,7 +20,7 @@ namespace FighterAndFish
         public bool UseSpecularHighlights { get; set; }
 
         //Texturing
-        public Texture Texture { get; set; }
+        public Texture2D Texture { get; set; }
         public float WrapAmount { get; set; }
 
         //property for the normal map texture
@@ -42,12 +42,14 @@ namespace FighterAndFish
 
 
         public Models(Model _mesh,
-                       Texture _texture,
+                       Texture2D _texture,
+                       Texture2D _normalMap,
                        Vector3 _position,
                        float _scale)
         {
             Mesh = _mesh;
             Texture = _texture;
+            NormalMap = _normalMap;
             Translation = Matrix.CreateTranslation(_position);
             Rotation = Matrix.Identity;
             Scale = Matrix.CreateScale(_scale);
@@ -111,12 +113,12 @@ namespace FighterAndFish
             // Set camera position
             Shader.Parameters["CameraPosition"].SetValue(_cameraPosition);
 
-         
 
             // Set lighting variables
             Shader.Parameters["DiffuseColor"].SetValue(DiffuseColor);
             Shader.Parameters["SpecularPower"].SetValue(SpecularPower);
             Shader.Parameters["SpecularColor"].SetValue(SpecularColor);
+
             Shader.Parameters["LightDirection"].SetValue(LightDirection);
             Shader.Parameters["LightColor"].SetValue(LightColor);
 

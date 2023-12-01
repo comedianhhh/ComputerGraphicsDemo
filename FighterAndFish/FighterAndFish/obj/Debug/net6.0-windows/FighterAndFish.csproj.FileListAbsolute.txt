@@ -38,3 +38,11 @@ D:\GIthub_rep\PROG54310\FighterAndFish\FighterAndFish\FighterAndFish\obj\Debug\n
 D:\GIthub_rep\PROG54310\FighterAndFish\FighterAndFish\FighterAndFish\obj\Debug\net6.0-windows\FighterAndFish.genruntimeconfig.cache
 D:\GIthub_rep\PROG54310\FighterAndFish\FighterAndFish\FighterAndFish\obj\Debug\net6.0-windows\ref\FighterAndFish.dll
 D:\GIthub_rep\PROG54310\FighterAndFish\FighterAndFish\FighterAndFish\bin\Debug\net6.0-windows\Content\SkyBox.xnb
+D:\GIthub_rep\PROG54310\FighterAndFish\FighterAndFish\FighterAndFish\bin\Debug\net6.0-windows\Content\FighterNormal.xnb
+D:\GIthub_rep\PROG54310\FighterAndFish\FighterAndFish\FighterAndFish\bin\Debug\net6.0-windows\Content\FighterShader.xnb
+D:\GIthub_rep\PROG54310\FighterAndFish\FighterAndFish\FighterAndFish\bin\Debug\net6.0-windows\Content\MyFont.xnb
+D:\GIthub_rep\PROG54310\FighterAndFish\FighterAndFish\FighterAndFish\bin\Debug\net6.0-windows\Content\Fighter.xnb
+D:\GIthub_rep\PROG54310\FighterAndFish\FighterAndFish\FighterAndFish\bin\Debug\net6.0-windows\Content\FighterDiffuse_0.xnb
+D:\GIthub_rep\PROG54310\FighterAndFish\FighterAndFish\FighterAndFish\bin\Debug\net6.0-windows\Content\FighterDiffuse.xnb
+D:\GIthub_rep\PROG54310\FighterAndFish\FighterAndFish\FighterAndFish\obj\Debug\net6.0-windows\FighterAndFish.Form1.resources
+D:\GIthub_rep\PROG54310\FighterAndFish\FighterAndFish\FighterAndFish\obj\Debug\net6.0-windows\FighterAndFish.csproj.GenerateResource.cache

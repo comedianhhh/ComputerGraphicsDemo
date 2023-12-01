@@ -18,6 +18,8 @@ float3 AmbientColor = float3(0.15f, 0.15f, 0.15f);
 float SpecularPower = 4;
 float3 SpecularColor = float3(0, 0, 1);
 
+
+float WrapAmount = 1.0f;
 float3 CameraPosition = float3(0, 30, 30);
 matrix World;
 
@@ -40,7 +42,9 @@ sampler NormalMapSampler = sampler_state
     texture = <NormalMap>;
     MinFilter = Anisotropic;
     MagFilter = Anisotropic;
-    MipFilter = LINEAR;
+    MipFilter = Anisotropic;
+    addressU = Wrap;
+    addressV = Wrap;
 };
 
 //setting
@@ -54,15 +58,16 @@ struct VertexShaderInput
     float2 UV : TEXCOORD0;
     float3 Normal : NORMAL0;
     float3 Tangent : TANGENT0; // Add tangent for normal mapping
+    float3 Binormal : BINORMAL0;
 };
 
 struct VertexShaderOutput
 {
     float4 Position : SV_POSITION;
     float2 UV : TEXCOORD0;
-    float3 Normal : NORMAL0;
-    float3 Tangent : TEXCOORD1; // Pass tangent to pixel shader
     float3 ViewDirection : TEXCOORD2;
+    float3 Normal : NORMAL0;
+    float3x3 WorldToTangent : NORMAL1;
 };
 
 VertexShaderOutput MainVS(in VertexShaderInput input)
@@ -71,13 +76,16 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 
     float4 worldPosition = mul(input.Position, World);
     output.Position = mul(input.Position, WorldViewProjection);
-    output.UV = input.UV;
+    output.UV = input.UV*WrapAmount;
+    
+    
     output.Normal = normalize(mul(input.Normal, World));
+    output.WorldToTangent[0] = normalize(mul(input.Tangent, World));
+    output.WorldToTangent[1]= normalize(mul(input.Binormal, World));
+    output.WorldToTangent[2] = output.Normal;
+    
     output.ViewDirection = normalize(worldPosition - CameraPosition);
 
-    // Pass tangent to pixel shader
-    output.Tangent = normalize(mul(input.Tangent, (float3x3) World));
-    
 	return output;
 }
 
@@ -88,10 +96,8 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float3 normal = input.Normal;
     if (useNormalMap)
     {
-        float3 tangentNormal = tex2D(NormalMapSampler, input.UV).xyz * 2.0 - 1.0;
-        float3 binormal = cross(input.Normal, input.Tangent);
-        float3x3 TBN = float3x3(input.Tangent, binormal, input.Normal);
-        normal = mul(tangentNormal, TBN);
+        float3 tangentNormal = tex2D(NormalMapSampler, input.UV).rgb * 2.0 - 1.0;
+        normal = normalize(mul(tangentNormal, input.WorldToTangent));
     }
 
     // Lambertian Lighting
