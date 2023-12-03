@@ -55,7 +55,7 @@ namespace FighterAndFish
             Scale = Matrix.CreateScale(_scale);
             DiffuseColor = new Vector3(1.0f, 1.0f, 1.0f);
             SpecularPower = 4.0f;
-            SpecularColor = new Vector3(3.0f, 3.0f, 3.0f);
+            SpecularColor = new Vector3(1.0f, 1.0f, 1.0f);
 
             LightPosition = new Vector3(0, 50, 20);
             LightAttenuation = 5000;
@@ -64,7 +64,7 @@ namespace FighterAndFish
 
 
             LightColor = new Vector3(1.0f, 1.0f, 1.0f); // White light
-            LightDirection = new Vector3(0.0f, -1.0f, 0.0f); // Direction facing downwards
+            LightDirection = new Vector3(0.0f, -2.0f, 1.0f); // Direction facing downwards
         }
 
         public void SetShader(Effect _effect)
@@ -137,5 +137,7 @@ namespace FighterAndFish
                 mesh.Draw();
             }
         }
+
+        
     }
 }

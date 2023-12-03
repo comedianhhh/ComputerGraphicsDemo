@@ -57,7 +57,7 @@ struct VertexShaderInput
     float4 Position : POSITION0;
     float2 UV : TEXCOORD0;
     float3 Normal : NORMAL0;
-    float3 Tangent : TANGENT0; // Add tangent for normal mapping
+    float3 Tangent : TANGENT0;
     float3 Binormal : BINORMAL0;
 };
 
@@ -65,9 +65,9 @@ struct VertexShaderOutput
 {
     float4 Position : SV_POSITION;
     float2 UV : TEXCOORD0;
-    float3 ViewDirection : TEXCOORD2;
-    float3 Normal : NORMAL0;
-    float3x3 WorldToTangent : NORMAL1;
+    float3 ViewDirection : TEXCOORD1;
+    float3 Normal : TEXCOORD2;
+    float3x3 WorldToTangent : TEXCOORD3;
 };
 
 VertexShaderOutput MainVS(in VertexShaderInput input)
@@ -79,8 +79,8 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
     output.UV = input.UV*WrapAmount;
     
     
-    output.Normal = normalize(mul(input.Normal, World));
-    output.WorldToTangent[0] = normalize(mul(input.Tangent, World));
+    output.Normal = normalize(mul(input.Normal, (float3x3) World));
+    output.WorldToTangent[0] = normalize(mul(input.Tangent, (float3x3) World));
     output.WorldToTangent[1]= normalize(mul(input.Binormal, World));
     output.WorldToTangent[2] = output.Normal;
     
@@ -91,7 +91,19 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
+    // Lambertian Lighting
+    float3 lightDir = normalize(LightDirection);
     
+    // Diffuse Map
+    float3 diffuse = DiffuseColor;
+    if (useDiffuseMap)
+    {
+        diffuse *= tex2D(BasicTextureSampler, input.UV).xyz;
+    }
+    else
+    {
+        diffuse = float3(0.5, 0.5, 0.5); // Render in grey if no diffuse map
+    }
     // Normal Mapping
     float3 normal = input.Normal;
     if (useNormalMap)
@@ -100,9 +112,6 @@ float4 MainPS(VertexShaderOutput input) : COLOR
         normal = normalize(mul(tangentNormal, input.WorldToTangent));
     }
 
-    // Lambertian Lighting
-    float3 lightDir = normalize(LightDirection);
-    float3 lighting = saturate(dot(lightDir, normal)) * LightColor;
 
     // Specular Highlights
     float3 specular = float3(0, 0, 0);
@@ -112,19 +121,10 @@ float4 MainPS(VertexShaderOutput input) : COLOR
         float3 reflectDir = reflect(-lightDir, normal);
         specular = pow(saturate(dot(reflectDir, viewDir)), SpecularPower) * SpecularColor;
     }
-    // Diffuse Map
-    float3 diffuse = DiffuseColor;
-    if (useDiffuseMap)
-    {
-        diffuse *= tex2D(BasicTextureSampler, input.UV);
-    }
-    else
-    {
-        diffuse = float3(0.5, 0.5, 0.5); // Render in grey if no diffuse map
-    }
+    float3 lighting = saturate(dot(lightDir, normal)) * LightColor;
 
     // Final Color
-    float3 output = (saturate(AmbientColor) + lighting) * diffuse + specular;
+    float3 output = (saturate(AmbientColor) + lighting + specular) * diffuse;
 
     return float4(output, 1);
 }

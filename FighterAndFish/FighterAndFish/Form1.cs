@@ -44,5 +44,28 @@ namespace FighterAndFish
         {
             _game.SetShaderOption("Wireframe", WireFrameCB.Checked);
         }
+
+        private void SpaceFighterRB_CheckedChanged(object sender, EventArgs e)
+        {
+            _game.SetScene("SpaceFighterMaps", true);
+            _game.SetScene("SpaceScene", false);
+            _game.SetScene("PostProcessing", false);
+            
+
+        }
+
+        private void SpaceSceneRB_CheckedChanged(object sender, EventArgs e)
+        {
+            _game.SetScene("SpaceScene", true);
+            _game.SetScene("SpaceFighterMaps", false);
+            _game.SetScene("PostProcessing", false);
+        }
+
+        private void PostProcessingRB_CheckedChanged(object sender, EventArgs e)
+        {
+            _game.SetScene("PostProcessing", true);
+            _game.SetScene("SpaceFighterMaps", false);
+            _game.SetScene("SpaceScene", false);
+        }
     }
 }

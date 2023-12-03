@@ -62,6 +62,7 @@
             SpaceFighterRB.TabStop = true;
             SpaceFighterRB.Text = "SpaceFighterMaps";
             SpaceFighterRB.UseVisualStyleBackColor = true;
+            SpaceFighterRB.CheckedChanged += SpaceFighterRB_CheckedChanged;
             // 
             // SpaceSceneRB
             // 
@@ -73,6 +74,7 @@
             SpaceSceneRB.TabStop = true;
             SpaceSceneRB.Text = "Space Scene";
             SpaceSceneRB.UseVisualStyleBackColor = true;
+            SpaceSceneRB.CheckedChanged += SpaceSceneRB_CheckedChanged;
             // 
             // PostProcessingRB
             // 
@@ -84,6 +86,7 @@
             PostProcessingRB.TabStop = true;
             PostProcessingRB.Text = "Post Processing";
             PostProcessingRB.UseVisualStyleBackColor = true;
+            PostProcessingRB.CheckedChanged += PostProcessingRB_CheckedChanged;
             // 
             // groupBox1
             // 
