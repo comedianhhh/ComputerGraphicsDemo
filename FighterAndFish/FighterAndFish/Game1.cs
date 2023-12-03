@@ -226,30 +226,39 @@ namespace FighterAndFish
             // Apply post-processing if enabled
             if (PostProcessing)
             {
-                Fish.UseDiffuseMap = true;
-                Fish.UseSpecularHighlights = true;
-                Fish.UseNormalMap = true;
-                Fish.Render(_view, _projection, _cameraPosition);
-
-                if(enableBlackAndWhite)
+                if(!enableBlackAndWhite&&!enableUnderwater)
                 {
+                    Fish.UseDiffuseMap = true;
+                    Fish.UseSpecularHighlights = true;
+                    Fish.UseNormalMap = true;
 
-
+                    Fish.Render(_view, _projection, _cameraPosition);
+                }
+     
+                else if (enableBlackAndWhite)
+                {
                     DrawSceneToTexture(sceneRenderTarget);
+                    BlackAndWhiteShader.Parameters["useBlackandWite"].SetValue(true);
+                    BlackAndWhiteShader.Parameters["useUnderWater"].SetValue(false);
+              
                     _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend,
                                     SamplerState.LinearClamp, DepthStencilState.Default,
                                     RasterizerState.CullNone, BlackAndWhiteShader);
                     _spriteBatch.Draw(sceneRenderTarget, Vector2.Zero, Color.White);
                     _spriteBatch.End();
                 }
-                if (enableUnderwater)
+                else if (enableUnderwater)
                 {
-                    UnderwaterShader.Parameters["time"].SetValue(time);
+                    BlackAndWhiteShader.Parameters["useUnderWater"].SetValue(true);
+                    BlackAndWhiteShader.Parameters["useBlackandWite"].SetValue(false);
+                    BlackAndWhiteShader.Parameters["frequency"].SetValue(frequency);
+                    BlackAndWhiteShader.Parameters["amplitude"].SetValue(amplitude);
+                    BlackAndWhiteShader.Parameters["time"].SetValue(time);
                     DrawSceneToTexture(sceneRenderTarget);
 
                     _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend,
                                            SamplerState.LinearClamp, DepthStencilState.Default,
-                                           RasterizerState.CullNone, UnderwaterShader);
+                                           RasterizerState.CullNone, BlackAndWhiteShader);
                     _spriteBatch.Draw(sceneRenderTarget, Vector2.Zero, Color.White);
                     _spriteBatch.End();
                 }
