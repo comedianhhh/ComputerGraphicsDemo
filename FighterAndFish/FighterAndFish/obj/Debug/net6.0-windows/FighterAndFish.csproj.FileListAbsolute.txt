@@ -46,3 +46,8 @@ D:\GIthub_rep\PROG54310\FighterAndFish\FighterAndFish\FighterAndFish\bin\Debug\n
 D:\GIthub_rep\PROG54310\FighterAndFish\FighterAndFish\FighterAndFish\bin\Debug\net6.0-windows\Content\FighterDiffuse.xnb
 D:\GIthub_rep\PROG54310\FighterAndFish\FighterAndFish\FighterAndFish\obj\Debug\net6.0-windows\FighterAndFish.Form1.resources
 D:\GIthub_rep\PROG54310\FighterAndFish\FighterAndFish\FighterAndFish\obj\Debug\net6.0-windows\FighterAndFish.csproj.GenerateResource.cache
+D:\GIthub_rep\PROG54310\FighterAndFish\FighterAndFish\FighterAndFish\bin\Debug\net6.0-windows\Content\BWPost.xnb
+D:\GIthub_rep\PROG54310\FighterAndFish\FighterAndFish\FighterAndFish\bin\Debug\net6.0-windows\Content\Fish.xnb
+D:\GIthub_rep\PROG54310\FighterAndFish\FighterAndFish\FighterAndFish\bin\Debug\net6.0-windows\Content\FishDiffuse.xnb
+D:\GIthub_rep\PROG54310\FighterAndFish\FighterAndFish\FighterAndFish\bin\Debug\net6.0-windows\Content\FishNormal.xnb
+D:\GIthub_rep\PROG54310\FighterAndFish\FighterAndFish\FighterAndFish\bin\Debug\net6.0-windows\Content\UnderWaterPost.xnb

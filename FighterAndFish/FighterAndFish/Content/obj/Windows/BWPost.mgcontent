@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SourceFile>D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/BWPost.fx</SourceFile>
+  <SourceTime>2022-07-26T07:44:10-04:00</SourceTime>
+  <DestFile>D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/bin/Windows/BWPost.xnb</DestFile>
+  <DestTime>2023-12-03T14:17:37.7292125-05:00</DestTime>
+  <Importer>EffectImporter</Importer>
+  <ImporterTime>2022-07-26T07:44:56-04:00</ImporterTime>
+  <Processor>EffectProcessor</Processor>
+  <ProcessorTime>2022-07-26T07:44:56-04:00</ProcessorTime>
+  <Parameters>
+    <Key>DebugMode</Key>
+    <Value>Auto</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

@@ -4,16 +4,26 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
+    <File>D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/BWPost.fx</File>
     <File>D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/Cube.fbx</File>
     <File>D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/CubeMap.fx</File>
     <File>D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/Fighter.fbx</File>
     <File>D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/FighterDiffuse.jpg</File>
     <File>D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/FighterNormal.jpg</File>
     <File>D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/FighterShader.fx</File>
+    <File>D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/Fish.fbx</File>
+    <File>D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/FishDiffuse.jpg</File>
+    <File>D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/FishNormal.jpg</File>
     <File>D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/MyFont.spritefont</File>
     <File>D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/SkyBox.dds</File>
+    <File>D:/GIthub_rep/PROG54310/FighterAndFish/FighterAndFish/FighterAndFish/Content/UnderWaterPost.fx</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

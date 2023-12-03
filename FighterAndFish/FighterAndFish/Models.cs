@@ -34,7 +34,6 @@ namespace FighterAndFish
         public Vector3 LightPosition { get; set; }
         public float LightAttenuation { get; set; }
         public float LightFalloff { get; set; }
-
         public float ConeAngle { get; set; }
  
         public Vector3 LightColor { get; set; }
@@ -112,7 +111,6 @@ namespace FighterAndFish
 
             // Set camera position
             Shader.Parameters["CameraPosition"].SetValue(_cameraPosition);
-
 
             // Set lighting variables
             Shader.Parameters["DiffuseColor"].SetValue(DiffuseColor);

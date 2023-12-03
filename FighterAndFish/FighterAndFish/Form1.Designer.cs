@@ -131,6 +131,7 @@
             trackBar2.Name = "trackBar2";
             trackBar2.Size = new System.Drawing.Size(223, 45);
             trackBar2.TabIndex = 6;
+            trackBar2.Scroll += trackBar2_Scroll;
             // 
             // AmplitudeTB
             // 
@@ -140,6 +141,7 @@
             AmplitudeTB.Size = new System.Drawing.Size(223, 45);
             AmplitudeTB.TabIndex = 5;
             AmplitudeTB.Value = 1;
+            AmplitudeTB.Scroll += AmplitudeTB_Scroll;
             // 
             // FrequencyLB
             // 
@@ -168,6 +170,7 @@
             TintBlueCB.TabIndex = 2;
             TintBlueCB.Text = "Tint Blue";
             TintBlueCB.UseVisualStyleBackColor = true;
+            TintBlueCB.CheckedChanged += TintBlueCB_CheckedChanged;
             // 
             // UnderWaterSceneRB
             // 
@@ -179,6 +182,7 @@
             UnderWaterSceneRB.TabStop = true;
             UnderWaterSceneRB.Text = "Under Water Scene";
             UnderWaterSceneRB.UseVisualStyleBackColor = true;
+            UnderWaterSceneRB.CheckedChanged += UnderWaterSceneRB_CheckedChanged;
             // 
             // BlackandWhiteRB
             // 
@@ -190,6 +194,7 @@
             BlackandWhiteRB.TabStop = true;
             BlackandWhiteRB.Text = "Black and White";
             BlackandWhiteRB.UseVisualStyleBackColor = true;
+            BlackandWhiteRB.CheckedChanged += BlackandWhiteRB_CheckedChanged;
             // 
             // AddSpaceFighterBT
             // 

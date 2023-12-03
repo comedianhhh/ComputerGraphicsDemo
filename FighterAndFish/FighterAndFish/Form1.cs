@@ -50,7 +50,7 @@ namespace FighterAndFish
             _game.SetScene("SpaceFighterMaps", true);
             _game.SetScene("SpaceScene", false);
             _game.SetScene("PostProcessing", false);
-            
+
 
         }
 
@@ -66,6 +66,35 @@ namespace FighterAndFish
             _game.SetScene("PostProcessing", true);
             _game.SetScene("SpaceFighterMaps", false);
             _game.SetScene("SpaceScene", false);
+        }
+
+        private void BlackandWhiteRB_CheckedChanged(object sender, EventArgs e)
+        {
+            _game.SetPostProcessing("BlackAndWhite", true);
+            _game.SetPostProcessing("UnderWater", false);
+        }
+
+        private void UnderWaterSceneRB_CheckedChanged(object sender, EventArgs e)
+        {
+            _game.SetPostProcessing("Underwater", true);
+            _game.SetPostProcessing("BlackAndWhite", false);
+        }
+
+        private void AmplitudeTB_Scroll(object sender, EventArgs e)
+        {
+            _game.SetPPValue("Amplitude", AmplitudeTB.Value/100);
+            AmplitudeValueLB.Text = ((double)AmplitudeTB.Value / 100).ToString("F2");
+        }
+
+        private void trackBar2_Scroll(object sender, EventArgs e)
+        {
+            _game.SetPPValue("Frequency", trackBar2.Value/100);
+            FrequencyValueLB.Text = ((double)trackBar2.Value / 100).ToString("F2");
+        }
+
+        private void TintBlueCB_CheckedChanged(object sender, EventArgs e)
+        {
+            _game.SetPostProcessing("TintBlue", TintBlueCB.Checked);
         }
     }
 }

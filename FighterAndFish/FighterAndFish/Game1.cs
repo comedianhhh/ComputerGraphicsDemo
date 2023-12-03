@@ -17,7 +17,8 @@ namespace FighterAndFish
 
         // Shader-related fields
         Effect spaceFighterShader;
-        Effect postProcessShader;
+        Effect BlackAndWhiteShader;
+        Effect UnderwaterShader;
         //world , view, and projection matrices
         private Vector3 _cameraPosition = new Vector3(0, 20,20);
         private Matrix _view = Matrix.Identity;
@@ -53,8 +54,14 @@ namespace FighterAndFish
 
 
         // Post-processing fields
+        private Model FishModel;
+        private Texture2D FishTexture;
+        private Texture2D FishNormal;
+        private Models Fish;
+
+
         RenderTarget2D sceneRenderTarget;
-        bool enablePostProcessing;
+        //bool enablePostProcessing;
         bool enableBlackAndWhite;
         bool enableUnderwater;
         float frequency;
@@ -68,6 +75,11 @@ namespace FighterAndFish
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            // Set the window size
+            _graphics.PreferredBackBufferWidth = 1280; // Set this value to the desired width
+            _graphics.PreferredBackBufferHeight = 960; // Set this value to the desired height
+
         }
 
         protected override void Initialize()
@@ -77,6 +89,9 @@ namespace FighterAndFish
             _projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4,
                 GraphicsDevice.Viewport.AspectRatio, 0.1f, 1000f);
             spaceFighters = new List<Models>();
+            sceneRenderTarget = new RenderTarget2D(GraphicsDevice, GraphicsDevice.PresentationParameters.BackBufferWidth,
+                GraphicsDevice.PresentationParameters.BackBufferHeight,false, GraphicsDevice.PresentationParameters.BackBufferFormat,
+                                                    DepthFormat.Depth24);
 
             _myForm= new Form1(this);
             _myForm.Show();
@@ -102,7 +117,17 @@ namespace FighterAndFish
             spaceFighterNormal = Content.Load<Texture2D>("FighterNormal");
 
             // Initialize RenderTarget for post-processing
-            sceneRenderTarget = new RenderTarget2D(GraphicsDevice, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+            FishModel = Content.Load<Model>("Fish");
+            FishTexture = Content.Load<Texture2D>("FishDiffuse");
+            FishNormal = Content.Load<Texture2D>("FishNormal");
+            BlackAndWhiteShader = Content.Load<Effect>("BWPost");
+            UnderwaterShader = Content.Load<Effect>("UnderWaterPost");
+   
+
+
+            Fish = new Models(FishModel, FishTexture, FishNormal, Vector3.Zero, 0.3f);
+            Fish.SetShader(spaceFighterShader);
+
 
             MapsSpaceFighter = new Models(spaceFighter, spaceFighterTexture, spaceFighterNormal, Vector3.Zero, 0.008f);
             MapsSpaceFighter.SetShader(spaceFighterShader);
@@ -126,40 +151,32 @@ namespace FighterAndFish
             }
             else if (PostProcessing)
             {
-                // Update post-processing parameters
-                // For example, if you want to change the frequency of the underwater effect, you can do this:
-                // frequency = 0.5f;
-                // postProcessShader.Parameters["frequency"].SetValue(frequency);
+                time += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
         
 
-            // Handle button clicks and checkbox toggles
-            // For example, if a checkbox for the diffuse map is checked, set enableDiffuse to true
-
-            // Handle post-processing effect toggles
-            // For example, if a checkbox for black and white effect is checked, set enableBlackAndWhite to true
-
-
             if (addButtonClicked&&isSpaceScene)
             {
-                // Calculate the position 100 units in front of the camera
-                Vector3 fighterPosition = _cameraPosition + Vector3.Forward * 100; // Adjust direction as needed
+                // This code calculates the forward vector from the view matrix
+                Matrix invertedView = Matrix.Invert(_view);
+                Vector3 cameraForward = invertedView.Forward;
+
+                // Use the camera's forward vector to position the new fighter in front of the camera
+                Vector3 fighterPosition = _cameraPosition + cameraForward * 100;
 
                 // Create a new space fighter instance
-                Models newFighter = new Models(spaceFighter, spaceFighterTexture,spaceFighterNormal, fighterPosition, 0.008f);
+                Models newFighter = new Models(spaceFighter, spaceFighterTexture,spaceFighterNormal, fighterPosition, 0.03f);
                 newFighter.SetShader(spaceFighterShader);
 
-                newFighter.UseDiffuseMap = enableDiffuse;
-                newFighter.UseSpecularHighlights = enableSpecular;
-                newFighter.UseNormalMap = enableNormal;
+                newFighter.UseDiffuseMap = true;
+                newFighter.UseSpecularHighlights = true;
+                newFighter.UseNormalMap = true;
 
                 spaceFighters.Add(newFighter);
                 // Reset the flag
                 addButtonClicked = false;
             }
 
-            // Update time for post-processing effects
-            time += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             base.Update(gameTime);
         }
@@ -173,11 +190,8 @@ namespace FighterAndFish
             rasterizerState.CullMode = CullMode.None;
             GraphicsDevice.RasterizerState = rasterizerState;
             #endregion ConfigureDevice
-            #region PostProcessing
-            // Set the render target to apply post-processing
-            //GraphicsDevice.SetRenderTarget(sceneRenderTarget);
 
-            #endregion PostProcessing
+
             #region DrawSkyBox
             // Set depth stencil state for 3D rendering
             GraphicsDevice.DepthStencilState = DepthStencilState.None;
@@ -187,9 +201,7 @@ namespace FighterAndFish
             //MapsSpaceFighter.Render(_view, _projection, _cameraPosition);
             if (isSpaceFighterMaps)
             {
-                //MapsSpaceFighter.Shader.Parameters["useDiffuseMap"].SetValue(enableDiffuse);
-                //MapsSpaceFighter.Shader.Parameters["useSpecularHighlights"].SetValue(enableSpecular);
-                //MapsSpaceFighter.Shader.Parameters["useNormalMap"].SetValue(enableNormal);
+
                 MapsSpaceFighter.UseDiffuseMap = enableDiffuse;
                 MapsSpaceFighter.UseSpecularHighlights = enableSpecular;
                 MapsSpaceFighter.UseNormalMap = enableNormal;
@@ -210,23 +222,46 @@ namespace FighterAndFish
             }
    
 
-
-            // Revert to the main back buffer
-            //GraphicsDevice.SetRenderTarget(null);
-
-
+            #region PostProcessing
             // Apply post-processing if enabled
-            if (enablePostProcessing)
+            if (PostProcessing)
             {
-                _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
-                postProcessShader.Parameters["time"].SetValue(time);
-                // Set other post-processing parameters...
-                postProcessShader.CurrentTechnique.Passes[0].Apply();
-                _spriteBatch.Draw(sceneRenderTarget, GraphicsDevice.Viewport.Bounds, Color.White);
-                _spriteBatch.End();
+                Fish.UseDiffuseMap = true;
+                Fish.UseSpecularHighlights = true;
+                Fish.UseNormalMap = true;
+                Fish.Render(_view, _projection, _cameraPosition);
+
+                if(enableBlackAndWhite)
+                {
+
+
+                    DrawSceneToTexture(sceneRenderTarget);
+                    _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend,
+                                    SamplerState.LinearClamp, DepthStencilState.Default,
+                                    RasterizerState.CullNone, BlackAndWhiteShader);
+                    _spriteBatch.Draw(sceneRenderTarget, Vector2.Zero, Color.White);
+                    _spriteBatch.End();
+                }
+                if (enableUnderwater)
+                {
+                    UnderwaterShader.Parameters["time"].SetValue(time);
+                    DrawSceneToTexture(sceneRenderTarget);
+
+                    _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend,
+                                           SamplerState.LinearClamp, DepthStencilState.Default,
+                                           RasterizerState.CullNone, UnderwaterShader);
+                    _spriteBatch.Draw(sceneRenderTarget, Vector2.Zero, Color.White);
+                    _spriteBatch.End();
+                }
+
             }
+            
+
+            #endregion PostProcessing
 
 
+
+            //info text
             _spriteBatch.Begin();
             // Only draw the information for the last space fighter if any exist
             if (spaceFighters.Any())
@@ -246,10 +281,33 @@ namespace FighterAndFish
                                   $"Position: {position}\n" +
                                   $"Rotation: {rotation}\n" + // Assuming you've converted Quaternion to Euler angles
                                   $"Scale: {scale}\n" +
+                                  $"Fighter Count: {spaceFighters.Count}\n" +
                                   $"Camera Position: {_cameraPosition}";
 
                 // Draw the formatted text
-                _spriteBatch.DrawString(infoFont, infoText, new Vector2(10, 10), Color.LimeGreen);
+                _spriteBatch.DrawString(infoFont, infoText, new Vector2(10, 10), Color.LightGoldenrodYellow);
+            }
+            if (PostProcessing)
+            {
+
+                Matrix transformMatrix = Fish.GetTransform();
+                // Decompose the matrix into scale, rotation (as a quaternion), and translation
+
+                // Decompose the world transformation matrix
+                transformMatrix.Decompose(out Vector3 scale, out Quaternion rotationQuat, out Vector3 position);
+
+                // Convert rotation quaternion to Euler angles (in degrees)
+                Vector3 rotation = QuaternionToEuler(rotationQuat);
+
+
+                string infoText = $"Magic Fish\n" +
+                                  $"Position: {position}\n" +
+                                  $"Rotation: {rotation}\n" + // Assuming you've converted Quaternion to Euler angles
+                                  $"Scale: {scale}\n" +
+                                  $"Camera Position: {_cameraPosition}";
+
+                // Draw the formatted text
+                _spriteBatch.DrawString(infoFont, infoText, new Vector2(10, 10), Color.YellowGreen);
             }
 
             _spriteBatch.End();
@@ -321,6 +379,8 @@ namespace FighterAndFish
                 case "PostProcessing":
                     RemoveExistingSpaceFighter();
                     PostProcessing = enabled;
+                    _cameraPosition = new Vector3(0, 20, 20);
+                    _view = Matrix.CreateLookAt(_cameraPosition, Vector3.Zero, Vector3.UnitY);
                     break;
             }
         }
@@ -342,8 +402,50 @@ namespace FighterAndFish
 
         }
 
+        protected void DrawSceneToTexture(RenderTarget2D _renderTarget)
+        {
+            //set the render target
+            GraphicsDevice.SetRenderTarget(_renderTarget);
 
+            //Draw the scene
 
+            Fish.UseDiffuseMap = true;
+            Fish.UseSpecularHighlights = true;
+            Fish.UseNormalMap = true;
+            Fish.Render(_view, _projection, _cameraPosition);
+
+            GraphicsDevice.SetRenderTarget(null);
+        }
+
+        public void SetPPValue(string option, float value)
+        {
+            switch (option)
+            {
+                case "Frequency":
+                    frequency = value;
+                    UnderwaterShader.Parameters["frequency"].SetValue(frequency);
+                    break;
+                case "Amplitude":
+                    amplitude = value;
+                    UnderwaterShader.Parameters["amplitude"].SetValue(amplitude);
+                    break;
+            }
+        }
+        public void SetPostProcessing(string option, bool enabled)
+        {
+            switch (option)
+            {
+                case "BlackAndWhite":
+                    enableBlackAndWhite = enabled;
+                    break;
+                case "Underwater":
+                    enableUnderwater = enabled;
+                    break;
+                case "TintBlue":
+                    tintBlue = enabled;
+                    break;
+            }
+        }
 
 
 
