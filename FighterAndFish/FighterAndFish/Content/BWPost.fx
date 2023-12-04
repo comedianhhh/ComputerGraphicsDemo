@@ -43,7 +43,7 @@ float4 MainPS(PSInput input) : COLOR0
         color = float4(gray, gray, gray, 1);
         
     }
-    else if( useUnderWater)
+    else if(useUnderWater)
     {
         // Calculate sine wave offset
         float wave = sin(input.TextureCoordinate * frequency + time) * amplitude;
@@ -54,14 +54,17 @@ float4 MainPS(PSInput input) : COLOR0
 
         // Sample the texture at the adjusted coordinates
         color = tex2D(TextureSampler, texCoord);
+        
 
         // Apply blue tint if enabled
         if (tintBlue)
         {
-            color.r /= 2;
-            color.g /= 2;
+            
+            color.r = color.r / 2;
+            color.g = color.g / 2;
+     
         }
-    }
+    } 
 
     return color;
 }

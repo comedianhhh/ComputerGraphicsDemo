@@ -35,7 +35,9 @@ namespace FighterAndFish
         public float LightAttenuation { get; set; }
         public float LightFalloff { get; set; }
         public float ConeAngle { get; set; }
- 
+        public float time { get; set; }
+
+     
         public Vector3 LightColor { get; set; }
         public Vector3 LightDirection { get; set; }
 
@@ -119,7 +121,11 @@ namespace FighterAndFish
 
             Shader.Parameters["LightDirection"].SetValue(LightDirection);
             Shader.Parameters["LightColor"].SetValue(LightColor);
-
+            if (Shader.Parameters["time"] != null)
+            { 
+                Shader.Parameters["time"].SetValue(time);
+            }
+    
             // Set shader flags
             Shader.Parameters["useDiffuseMap"].SetValue(UseDiffuseMap);
             Shader.Parameters["useNormalMap"].SetValue(UseNormalMap);

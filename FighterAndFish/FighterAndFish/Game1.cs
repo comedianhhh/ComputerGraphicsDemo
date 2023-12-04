@@ -152,6 +152,8 @@ namespace FighterAndFish
             else if (PostProcessing)
             {
                 time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Fish.time=time;
+          
             }
         
 
@@ -166,8 +168,9 @@ namespace FighterAndFish
 
                 // Create a new space fighter instance
                 Models newFighter = new Models(spaceFighter, spaceFighterTexture,spaceFighterNormal, fighterPosition, 0.03f);
+                
                 newFighter.SetShader(spaceFighterShader);
-
+                newFighter.Rotation = Matrix.CreateRotationX(34);
                 newFighter.UseDiffuseMap = true;
                 newFighter.UseSpecularHighlights = true;
                 newFighter.UseNormalMap = true;
@@ -177,7 +180,7 @@ namespace FighterAndFish
                 addButtonClicked = false;
             }
 
-
+            
             base.Update(gameTime);
         }
 
@@ -254,6 +257,7 @@ namespace FighterAndFish
                     BlackAndWhiteShader.Parameters["frequency"].SetValue(frequency);
                     BlackAndWhiteShader.Parameters["amplitude"].SetValue(amplitude);
                     BlackAndWhiteShader.Parameters["time"].SetValue(time);
+                    BlackAndWhiteShader.Parameters["tintBlue"].SetValue(tintBlue);
                     DrawSceneToTexture(sceneRenderTarget);
 
                     _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend,
@@ -267,7 +271,6 @@ namespace FighterAndFish
             
 
             #endregion PostProcessing
-
 
 
             //info text
@@ -313,6 +316,10 @@ namespace FighterAndFish
                                   $"Position: {position}\n" +
                                   $"Rotation: {rotation}\n" + // Assuming you've converted Quaternion to Euler angles
                                   $"Scale: {scale}\n" +
+                                  $"time: {Fish.time}\n" +
+                                  $"amplitude: {amplitude}\n" +
+                                  $"frequency: {frequency}\n" +
+                                  $"enableTintblue: {tintBlue}\n" +
                                   $"Camera Position: {_cameraPosition}";
 
                 // Draw the formatted text
@@ -426,16 +433,16 @@ namespace FighterAndFish
             GraphicsDevice.SetRenderTarget(null);
         }
 
-        public void SetPPValue(string option, float value)
+        public void SetPPValue(string option, double value)
         {
             switch (option)
             {
                 case "Frequency":
-                    frequency = value;
+                    frequency = (float)value;
                     UnderwaterShader.Parameters["frequency"].SetValue(frequency);
                     break;
                 case "Amplitude":
-                    amplitude = value;
+                    amplitude =(float) value;
                     UnderwaterShader.Parameters["amplitude"].SetValue(amplitude);
                     break;
             }

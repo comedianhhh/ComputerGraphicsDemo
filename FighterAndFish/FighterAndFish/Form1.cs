@@ -82,14 +82,16 @@ namespace FighterAndFish
 
         private void AmplitudeTB_Scroll(object sender, EventArgs e)
         {
-            _game.SetPPValue("Amplitude", AmplitudeTB.Value/100);
-            AmplitudeValueLB.Text = ((double)AmplitudeTB.Value / 100).ToString("F2");
+            double amplitudeValue = (double)AmplitudeTB.Value / 100;
+            _game.SetPPValue("Amplitude", amplitudeValue);
+            AmplitudeValueLB.Text = amplitudeValue.ToString("F2");
         }
 
         private void trackBar2_Scroll(object sender, EventArgs e)
         {
-            _game.SetPPValue("Frequency", trackBar2.Value/100);
-            FrequencyValueLB.Text = ((double)trackBar2.Value / 100).ToString("F2");
+            double frequencyValue = (double)trackBar2.Value / 100;
+            _game.SetPPValue("Frequency", frequencyValue);
+            FrequencyValueLB.Text = frequencyValue.ToString("F2");
         }
 
         private void TintBlueCB_CheckedChanged(object sender, EventArgs e)
